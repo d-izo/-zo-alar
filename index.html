@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İzo Çalar</title>
+    <style>
+        body {
+            background-image: url("ekkran.png");
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .image-container {
+            margin-bottom: 40px;
+            width: 350px;
+            height: 350px;
+            position: relative;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%; /* Görselin hep yuvarlak kalmasını sağlar */
+            transition: transform 0.1s ease; /* Daha hızlı geçiş efekti */
+        }
+        audio {
+            width: 300px;
+            margin-top: 20px;
+        }
+
+        /* Parlayan efekt için */
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, red, yellow);
+            filter: blur(15px); /* Parlama etkisi için blur */
+            opacity: 0.7;
+            z-index: -1;
+            transform: translate(-50%, -50%); /* Parlamayı tam ortalayın */
+            transition: transform 0.1s ease, opacity 0.1s ease; /* Daha hızlı geçiş efekti */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>No.1</h1>
+
+    <div class="container">
+        <div class="image-container" id="imageContainer">
+            <img id="musicImage" src="logono.1.png" alt="Müzik Çalar Görseli">
+        </div>
+
+        <audio id="audioPlayer" controls>
+            <source src="no1.mp3" type="audio/mp3">
+            Tarayıcınız bu ses dosyasını desteklemiyor.
+        </audio>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const musicImage = document.getElementById('musicImage');
+        const imageContainer = document.getElementById('imageContainer');
+
+        // Görseli küçük miktarda büyütüp küçültme (titreşim efekti)
+        function animateImage() {
+            if (!audioPlayer.paused) {
+                const scaleValue = 1 + (Math.random() * 0.05); // 1 ile 1.05 arasında çok küçük bir büyüklük
+                musicImage.style.transform = `scale(${scaleValue})`;
+                imageContainer.style.transform = `scale(${scaleValue})`; // Parlayan alanı da hafifçe büyüt
+                setTimeout(animateImage, 100); // Her 100 ms'de bir titreme
+            }
+        }
+
+        function resetImage() {
+            musicImage.style.transform = 'scale(1)';
+            imageContainer.style.transform = 'scale(1)';
+        }
+
+        audioPlayer.addEventListener('play', animateImage);
+        audioPlayer.addEventListener('pause', resetImage);
+        audioPlayer.addEventListener('ended', resetImage);
+    </script>
+
+</body>
+</html>
